@@ -37,4 +37,26 @@ sudo apt update
 sudo apt install openssh-server
 sudo systemctl start ssh
 scp filename username@192.168.1.105:/home/username/
-#VMtoHost
+
+#hadoop
+docker run -d --name hadoop crs4/hadoop:3.2.1
+docker exec -it hadoop bash -l
+echo "hello world hello hadoop hello docker" > input.txt
+hdfs dfs -mkdir -p /input
+hdfs dfs -put input.txt /input/
+hadoop jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount /input /output
+hdfs dfs -cat /output/part-r-00000
+
+exit
+
+#docker container
+sudo apt update
+sudo apt -y install docker.io
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo docker pull ubuntu
+sudo docker run -it --name <container-name> ubuntu
+
+exit
+
+
