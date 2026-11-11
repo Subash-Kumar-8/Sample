@@ -1,3 +1,40 @@
-Testing push
-Testing Fetch
-Test pull
+#Opennebula
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo docker run -d --name opennebula -p 2616:2616 opennebula/opennebula
+sudo docker ps
+sudo docker exec opennebula cat /var/lib/one/.one/one_auth
+
+#GAE
+from flask import Flask, request, render_template_string
+app = Flask(__name__)
+@app.route("/", methods=["GET", "POST"])
+def odd_numbers():
+    numbers = []
+    if request.method == "POST":
+        n = int(request.form["n"])
+        if n > 0:
+            numbers = [2 * i + 1 for i in range(n)]
+    return render_template_string("""
+        <h2>Find Odd Numbers</h2>
+        <form method="POST">
+            <label>Enter n:</label>
+            <input type="number" name="n" min="1" required>
+            <button type="submit">Find</button>
+        </form>
+        {% if numbers %}
+            <h3>First {{ numbers|length }} odd numbers:</h3>
+            <p>{{ numbers }}</p>
+        {% endif %}
+    """, numbers=numbers)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
+
+#VMtoVM
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl start ssh
+scp filename username@192.168.1.105:/home/username/
+#VMtoHost
